@@ -13,6 +13,12 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.name}', '{self.email}', '{self.sr_code}', '{self.program}')"
 
+class UserLevel(db.Model):
+    user_level = db.Column(db.Integer, primary_key=True)
+    level_name = db.Column(db.String(20), unique=True, nullable=False)
+
+    def __repr__(self):
+        return f"UserLevel('{self.level_name}')"
     
 class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True) # Order ID 
