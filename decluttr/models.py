@@ -10,6 +10,10 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     user_level = db.Column (db.Integer, db.ForeignKey('user_level.user_level'), default=1, nullable=True)
 
+   def __repr__(self):
+        return f"User('{self.name}', '{self.email}', '{self.sr_code}', '{self.program}')"
+
+
  
 class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True) # Order ID 
