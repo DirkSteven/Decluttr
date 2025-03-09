@@ -44,4 +44,14 @@ class Product(db.Model):
 
 
 class ProductVariant(db.Model):
-    pass
+    id = db.Column(db.Integer, primary_key=True) ## Product Variant ID
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+    color = db.Column(db.String(20), nullable=True)
+    storage = db.Column(db.String(20), nullable=False)
+    price = db.Column(Numeric(2), nullable=False)
+
+    # Define the relationship to the Product model
+    product = db.relationship('Product', backref='variants')
+
+    def __repr__(self):
+        return f"ProductVariant('{self.product_id}', '{self.size}', '{self.stock}')"
