@@ -30,4 +30,14 @@ class Order(db.Model):
 
 
 class Product(db.Model):
-    pass
+    id = db.Column(db.Integer, primary_key=True) # Product ID
+    name = db.Column(db.String(100), nullable=False)
+    brand = db.Column(db.String(100), nullable=False)
+    model = db.Column(db.String(100), nullable=True)
+    condition = db.Column(db.String(100), nullable=False)
+    price = db.Column(Numeric(10, 2), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    image_url = db.Column(db.String(255), nullable=True)
+
+    def __repr__(self):
+        return f"Product('{self.name}', '{self.price}')"
