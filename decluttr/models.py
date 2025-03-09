@@ -27,3 +27,7 @@ class Order(db.Model):
 
     def __repr__(self):
         return f"Cart('{self.user_id}', '{self.order_id}', '{self.product_id}', '{self.order_total}', '{self.date_purchase}')"
+
+
+class Product(db.Model):
+    pass
