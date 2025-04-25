@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decluttr - Apple iPhone 14 Pro Max</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #fff;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #000;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #f5f7fa;
+            border-radius: 20px;
+            padding: 8px 15px;
+            width: 300px;
+        }
+        
+        .search-bar input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            padding: 5px;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        .search-icon {
+            color: #666;
+            margin-right: 8px;
+        }
+        
+        .header-icons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: #333;
+        }
+        
+        /* Navigation Styles */
+        .nav-tabs {
+            display: flex;
+            gap: 30px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .nav-tab {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding-bottom: 15px;
+            position: relative;
+        }
+        
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #333;
+        }
+        
+        /* Product Section */
+        .product-section {
+            display: flex;
+            gap: 40px;
+            padding: 40px 0;
+        }
+        
+        .product-gallery {
+            flex: 1;
+        }
+        
+        .main-image {
+            background-color: #f0f4f9;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .main-image img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .thumbnails {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .thumbnail {
+            width: 70px;
+            height: 70px;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            cursor: pointer;
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-details {
+            flex: 1;
+        }
+        
+        .product-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .product-condition {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .product-price {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .original-price {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .product-description {
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        
+        .features-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .feature-list {
+            list-style: none;
+        }
+        
+        .feature-item {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .feature-icon {
+            color: #4CAF50;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .buy-now-btn {
+            background-color: #4a7dff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .buy-now-btn:hover {
+            background-color: #3a6ae0;
+        }
+        
+        .add-to-cart-btn {
+            background-color: #e9f0ff;
+            color: #4a7dff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+        
+        .add-to-cart-btn:hover {
+            background-color: #d9e5ff;
+        }
+        
+        .wishlist-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #ccc;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .wishlist-btn.active {
+            color: #ff4d4d;
+        }
+        
+        @media (max-width: 768px) {
+            .product-section {
+                flex-direction: column;
+            }
+            
+            .search-bar {
+                width: 200px;
+            }
+            
+            .action-buttons {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="{{ url_for('index')}}" class="logo" style="text-decoration: none;color:#000">Decluttr</a>
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Search">
+                </div>
+                <div class="header-icons">
+                    <button class="icon-btn">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <a href = "{{ url_for('cart')}}">
+                    <button class="icon-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    </a>
+                    <button class="icon-btn">
+                        <i class="far fa-user"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <nav class="container">
+        <div class="nav-tabs">
+            <a href="#" class="nav-tab">New Release</a>
+            <a href="#" class="nav-tab">Sale</a>
+            <a href="#" class="nav-tab">Android</a>
+            <a href="#" class="nav-tab active">iPhone</a>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <section class="product-section">
+            <div class="product-gallery">
+                <div class="main-image">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-IKjF5geXM1h9iWONMNTUar6oHfMC7O.png" alt="Apple iPhone 14 Pro Max" id="main-product-image">
+                </div>
+                <div class="thumbnails">
+                    <div class="thumbnail">
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-IKjF5geXM1h9iWONMNTUar6oHfMC7O.png" alt="iPhone 14 Pro Max - View 1" onclick="changeImage(this.src)">
+                    </div>
+                    <div class="thumbnail">
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-IKjF5geXM1h9iWONMNTUar6oHfMC7O.png" alt="iPhone 14 Pro Max - View 2" onclick="changeImage(this.src)">
+                    </div>
+                    <div class="thumbnail">
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-IKjF5geXM1h9iWONMNTUar6oHfMC7O.png" alt="iPhone 14 Pro Max - View 3" onclick="changeImage(this.src)">
+                    </div>
+                    <div class="thumbnail">
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-IKjF5geXM1h9iWONMNTUar6oHfMC7O.png" alt="iPhone 14 Pro Max - View 4" onclick="changeImage(this.src)">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-details">
+                <h1 class="product-title">Apple iPhone 14 Pro Max</h1>
+                <p class="product-condition">Condition: Slightly Used</p>
+                
+                <div class="product-price">$999.99</div>
+                <div class="original-price">(Original: $XXX.XX - X% OFF)</div>
+                
+                <div class="product-description">
+                    <strong>Description:</strong> Experience the power of the Apple iPhone 14 Pro Max. 
+                    Featuring a stunning 6.7-inch Super Retina XDR display, an A16 Bionic 
+                    chip for lightning-fast performance, and a 48MP main camera for pro-
+                    level photography. With Dynamic Island and Always-On Display, this 
+                    iPhone takes innovation to the next level.
+                </div>
+                
+                <div class="features-title">Key Features:</div>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        6.7-inch Super Retina XDR Display
+                    </li>
+                    <li class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        A16 Bionic Chip for high performance
+                    </li>
+                    <li class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        48MP Main Camera with advanced photography features
+                    </li>
+                    <li class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        Dynamic Island for an interactive experience
+                    </li>
+                    <li class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        All-day battery life
+                    </li>
+                    <li class="feature-item">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        iOS compatibility with long-term updates
+                    </li>
+                </ul>
+                
+                <div class="action-buttons">
+                    <button class="buy-now-btn">Buy Now</button>
+                    <button class="add-to-cart-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                        Add to cart
+                    </button>
+                    <button class="wishlist-btn" id="wishlist-btn" onclick="toggleWishlist()">
+                        <i class="far fa-heart" id="heart-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        function changeImage(src) {
+            document.getElementById('main-product-image').src = src;
+        }
+        
+        function toggleWishlist() {
+            const wishlistBtn = document.getElementById('wishlist-btn');
+            const heartIcon = document.getElementById('heart-icon');
+            
+            if (heartIcon.classList.contains('far')) {
+                heartIcon.classList.remove('far');
+                heartIcon.classList.add('fas');
+                wishlistBtn.classList.add('active');
+            } else {
+                heartIcon.classList.remove('fas');
+                heartIcon.classList.add('far');
+                wishlistBtn.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
