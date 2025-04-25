@@ -1,5 +1,7 @@
 # Decluttr 
 
+<br>
+
 ## Installation
 
 
@@ -12,5 +14,13 @@ Open `cmd` and inpout the command below.
 #### To run 
 
 ``` python 
-    python run .py
+    python run.py
 ``` 
+
+
+<br>
+
+#### Demo 
+
+
+![Demo](sample.gif)
