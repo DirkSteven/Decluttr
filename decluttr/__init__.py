@@ -10,6 +10,11 @@ app = Flask(__name__)
 # App configuration
 app.config['SECRET_KEY'] = '4acfddcdf3e1362c239375a48b0ea52e'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+# Increase SQLite timeout to 15 seconds to handle potential locking issues
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    'connect_args': {'timeout': 15}
+}
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable track modifications to save resources
 
 # Initialize extensions
 db = SQLAlchemy(app)
@@ -18,9 +23,10 @@ bcrypt = Bcrypt(app)
 
 # Initialize LoginManager
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'  # This is where you specify the route for login
+login_manager.login_view = 'login'  # Specify the route for login
+login_manager.login_message_category = 'info'
 
-# User loader function (ensure the `User` model is imported from your models file)
+# User loader function
 from decluttr.models import User
 
 @login_manager.user_loader
