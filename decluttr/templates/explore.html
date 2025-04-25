@@ -198,7 +198,7 @@
                     <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                 </svg>
             </a>
-            <a href="#" aria-label="Account">
+            <a href="{{ url_for('login') }}" aria-label="Account">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
                     <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
                 </svg>
@@ -206,167 +206,50 @@
         </div>
     </header>
     
-    <nav class="categories">
-        <a href="#">New Release</a>
-        <a href="#">Sale</a>
-        <a href="#">Android</a>
-        <a href="#">iPhone</a>
-    </nav>
+    <div class="categories">
+        <a href="#">Phones</a>
+        <a href="#">Tablets</a>
+        <a href="#">Accessories</a>
+    </div>
     
-    <section>
-        <div class="section-header">
-            <h1 class="section-title">Explore Our Refurbished Phones</h1>
-            <div class="navigation-arrows">
-                <button class="arrow" aria-label="Previous">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-                    </svg>
-                </button>
-                <button class="arrow" aria-label="Next">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-                    </svg>
-                </button>
-            </div>
+    <div class="section-header">
+        <h2 class="section-title">Latest Deals</h2>
+        <div class="navigation-arrows">
+            <button class="arrow">&#8592;</button>
+            <button class="arrow">&#8594;</button>
         </div>
-        
-        <div class="products-grid">
-            <!-- Product 1 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-zk0MU05tiiXh93vmKakPMZmDpe2DaS.png" alt="Gold iPhone 14 Pro Max">
-                </div>
-                <div class="product-title">Apple iPhone 14 Pro Max</div>
-                <div class="product-price">$999.99</div>
-                <button class="add-to-cart">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px;">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                    </svg>
-                </button>
+    </div>
+    
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <div class="product-image">
+                <img src="{{ product.image_url }}" alt="{{ product.title }}">
             </div>
+            <div class="product-title">{{ product.name }}</div>
+            <div class="product-price">${{ product.price }}</div>
             
-            <!-- Product 2 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-zk0MU05tiiXh93vmKakPMZmDpe2DaS.png" alt="Green iPhone 14 Pro Max">
-                </div>
-                <div class="product-title">Apple iPhone 14 Pro Max</div>
-                <div class="product-price">$999.99</div>
-                <button class="add-to-cart">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px;">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}">
+                <button type="submit" class="add-to-cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         viewBox="0 0 16 16" style="margin-right: 5px;">
+                        <path
+                            d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 
+                               .485.379L2.89 3H14.5a.5.5 0 0 1 
+                               .491.592l-1.5 8A.5.5 0 0 1 13 
+                               12H4a.5.5 0 0 1-.491-.408L2.01 
+                               3.607 1.61 2H.5a.5.5 0 0 
+                               1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 
+                               12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 
+                               0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 
+                               1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 
+                               0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
                     </svg>
+                    Add to Cart
                 </button>
-            </div>
-            
-            <!-- Product 3 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-zk0MU05tiiXh93vmKakPMZmDpe2DaS.png" alt="Blue iPhone 14 Pro Max">
-                </div>
-                <div class="product-title">Apple iPhone 14 Pro Max</div>
-                <div class="product-price">$999.99</div>
-                <button class="add-to-cart">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px;">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                    </svg>
-                </button>
-            </div>
-            
-            <!-- Product 4 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-zk0MU05tiiXh93vmKakPMZmDpe2DaS.png" alt="Purple iPhone 14 Pro Max">
-                </div>
-                <div class="product-title">Apple iPhone 14 Pro Max</div>
-                <div class="product-price">$999.99</div>
-                <button class="add-to-cart">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px;">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                    </svg>
-                </button>
-            </div>
-            
-            <!-- Product 5 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-zk0MU05tiiXh93vmKakPMZmDpe2DaS.png" alt="White iPhone 14 Pro Max">
-                </div>
-                <div class="product-title">Apple iPhone 14 Pro Max</div>
-                <div class="product-price">$999.99</div>
-                <button class="add-to-cart">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px;">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                    </svg>
-                </button>
-            </div>
-            
-            <!-- Product 6 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-zk0MU05tiiXh93vmKakPMZmDpe2DaS.png" alt="Red iPhone 14 Pro Max">
-                </div>
-                <div class="product-title">Apple iPhone 14 Pro Max</div>
-                <div class="product-price">$999.99</div>
-                <button class="add-to-cart">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px;">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                    </svg>
-                </button>
-            </div>
-            
-            <!-- Product 7 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-zk0MU05tiiXh93vmKakPMZmDpe2DaS.png" alt="Blue iPhone 14 Pro Max">
-                </div>
-                <div class="product-title">Apple iPhone 14 Pro Max</div>
-                <div class="product-price">$999.99</div>
-                <button class="add-to-cart">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px;">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                    </svg>
-                </button>
-            </div>
-            
-            <!-- Product 8 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-zk0MU05tiiXh93vmKakPMZmDpe2DaS.png" alt="Green iPhone 14 Pro Max">
-                </div>
-                <div class="product-title">Apple iPhone 14 Pro Max</div>
-                <div class="product-price">$999.99</div>
-                <button class="add-to-cart">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px;">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                    </svg>
-                </button>
-            </div>
+            </form>
         </div>
-    </section>
-
-    <script>
-        // Simple functionality for the navigation arrows
-        document.addEventListener('DOMContentLoaded', function() {
-            const prevButton = document.querySelector('.arrow[aria-label="Previous"]');
-            const nextButton = document.querySelector('.arrow[aria-label="Next"]');
-            
-            prevButton.addEventListener('click', function() {
-                alert('Navigate to previous page');
-            });
-            
-            nextButton.addEventListener('click', function() {
-                alert('Navigate to next page');
-            });
-            
-            // Add to cart functionality
-            const addToCartButtons = document.querySelectorAll('.add-to-cart');
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    alert('Product added to cart!');
-                });
-            });
-        });
-    </script>
+        {% endfor %}
+    </div>
 </body>
 </html>
