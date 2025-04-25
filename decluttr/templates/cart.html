@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decluttr - Shopping Cart</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #f5f7fa;
+            border-radius: 20px;
+            padding: 8px 16px;
+            width: 400px;
+        }
+        
+        .search-bar input {
+            border: none;
+            background: transparent;
+            margin-left: 8px;
+            width: 100%;
+            outline: none;
+        }
+        
+        .icons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .icon {
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .cart-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            margin: 20px 0;
+            letter-spacing: 4px;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-weight: 600;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .product-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .product-image {
+            width: 80px;
+            height: 80px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 5px;
+        }
+        
+        .product-details h3 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .product-details p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .price {
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .cart-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-top: 30px;
+            gap: 20px;
+        }
+        
+        .total {
+            background-color: #f0f4f8;
+            padding: 10px 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .total-label {
+            font-weight: 600;
+        }
+        
+        .total-price {
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .checkout-btn {
+            background-color: #4a7dbd;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .checkout-btn:hover {
+            background-color: #3a6ca8;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}" style="text-decoration: none;color: #000;"><div class="logo">Decluttr</div></a>
+        <div class="search-bar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+            <input type="text" placeholder="Search">
+        </div>
+        <div class="nav-icons">
+            <a href="#" aria-label="Wishlist">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                </svg>
+            </a>
+            <a href="{{ url_for('cart') }}" aria-label="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </svg>
+            </a>
+            <a href="#" aria-label="Account">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <div class="cart-title">C A R T</div>
+
+    <div class="cart-container">
+        <div class="cart-header">
+            <div>PRODUCT</div>
+            <div>Total</div>
+        </div>
+
+        <!-- Cart Item 1 -->
+        <div class="cart-item">
+            <div class="product-info">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-5KGX2oK1Fmuo3IsbqR0xGkofbKKKgH.png" alt="iPhone 14 Pro Max" class="product-image">
+                <div class="product-details">
+                    <h3>Apple iPhone 14 Pro Max</h3>
+                    <p>Slightly Used</p>
+                </div>
+            </div>
+            <div class="price">$999.99</div>
+        </div>
+
+        <!-- Cart Item 2 -->
+        <div class="cart-item">
+            <div class="product-info">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-5KGX2oK1Fmuo3IsbqR0xGkofbKKKgH.png" alt="iPhone 14 Pro Max" class="product-image">
+                <div class="product-details">
+                    <h3>Apple iPhone 14 Pro Max</h3>
+                    <p>Slightly Used</p>
+                </div>
+            </div>
+            <div class="price">$999.99</div>
+        </div>
+
+        <!-- Cart Item 3 -->
+        <div class="cart-item">
+            <div class="product-info">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-5KGX2oK1Fmuo3IsbqR0xGkofbKKKgH.png" alt="iPhone 14 Pro Max" class="product-image">
+                <div class="product-details">
+                    <h3>Apple iPhone 14 Pro Max</h3>
+                    <p>Slightly Used</p>
+                </div>
+            </div>
+            <div class="price">$999.99</div>
+        </div>
+    </div>
+
+    <div class="cart-footer">
+        <div class="total">
+            <span class="total-label">Overall Total:</span>
+            <span class="total-price">$999.99</span>
+        </div>
+        <a href ="{{ url_for('frame')}}"><button class="checkout-btn">Check Out</button> </a>
+    </div>
+
+    <script>
+        // You could add JavaScript functionality here
+        // For example, to update quantities, remove items, or calculate totals
+    </script>
+</body>
+</html>
