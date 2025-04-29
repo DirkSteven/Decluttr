@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decluttr - Shopping Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}" style="text-decoration: none;color: #000;"><div class="logo">Decluttr</div></a>
+
+        <div class="nav-icons">
+            <a href="{{ url_for('cart') }}" aria-label="Cart" class="cart-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </svg>
+                {% if cart_count > 0 %}
+                    <span class="cart-count">{{ cart_count }}</span>
+                {% endif %}
+            </a>
+            <div class="user-menu">
+                {% if current_user.is_authenticated %}
+                    <div class="user-menu-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                        </svg>
+                        <span class="user-info">{{ current_user.name }}</span>
+                    </div>
+                    <div class="user-menu-content">
+                        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+                    </div>
+                {% else %}
+                    <a href="{{ url_for('login') }}" aria-label="Account">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                        </svg>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="flash-messages" id="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                        <button class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="cart-title">C A R T</div>
+
+    <form method="POST" action="{{ url_for('checkout') }}" id="checkout-form">
+        <div class="cart-container" id="cart-container">
+            {% if items %}
+            <div class="cart-header">
+                <div>SELECT</div>
+                <div>PRODUCT</div>
+                <div>QUANTITY</div>
+                <div>TOTAL</div>
+                <div>ACTIONS</div>
+            </div>
+            {% for item in items %}
+            <div class="cart-item">
+                <div>
+                    <input type="checkbox" name="selected_items" value="{{ item['product'].id }}_{{ item['variant'].id if item['variant'].id else 0 }}">
+                </div>
+                <div class="product-info">
+                    <a href="{{ url_for('frame', product_id=item['product'].id) }}" class="product-image-link">
+                        <img src="{{ item['product'].image_url }}" alt="{{ item['product'].name }}" class="product-image">
+                    </a>
+                    <div class="product-details">
+                        <h3>{{ item['product'].name }}</h3>
+                        <p>{{ item['variant'].color }} - {{ item['variant'].storage }}</p>
+                    </div>
+                </div>
+                <div class="quantity-controls">
+                    <button type="button" class="quantity-btn decrease-btn" 
+                        data-product-id="{{ item['product'].id }}" 
+                        data-variant-id="{{ item['variant'].id if item['variant'].id else 0 }}">-</button>
+                    <span>{{ item['quantity'] }}</span>
+                    <button type="button" class="quantity-btn increase-btn"
+                        data-product-id="{{ item['product'].id }}" 
+                        data-variant-id="{{ item['variant'].id if item['variant'].id else 0 }}">+</button>
+                </div>
+                <div class="price">${{ item['total_price']|float|round(2) }}</div>
+                <div>
+                    <button type="button" class="remove-btn" title="Remove Item"
+                        data-product-id="{{ item['product'].id }}" 
+                        data-variant-id="{{ item['variant'].id if item['variant'].id else 0 }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="empty-cart-message">Cart is empty</div>
+            {% endif %}
+        </div>
+        
+        {% if items %}
+        <div class="cart-footer">
+            <div class="total">
+                <span class="total-label">Overall Total:</span>
+                <span class="total-price">${{ overall_total|float|round(2) }}</span>
+            </div>
+            <button type="submit" class="checkout-btn">Check Out</button>
+        </div>
+        {% endif %}
+    </form>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle decrease quantity
+            document.querySelectorAll('.decrease-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    updateQuantity(this.dataset.productId, this.dataset.variantId, 'decrease');
+                });
+            });
+        
+            // Handle increase quantity
+            document.querySelectorAll('.increase-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    updateQuantity(this.dataset.productId, this.dataset.variantId, 'increase');
+                });
+            });
+        
+            // Handle remove item
+            document.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    removeItem(this.dataset.productId, this.dataset.variantId);
+                });
+            });
+        
+            function updateQuantity(productId, variantId, action) {
+                fetch(`/update_quantity/${productId}/${variantId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `action=${action}`
+                })
+                .then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        
+            function removeItem(productId, variantId) {
+                fetch(`/remove_item/${productId}/${variantId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    }
+                })
+                .then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            // Debounce function to limit AJAX requests
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            // Function to update cart container
+            function updateCartContainer(items, overallTotal) {
+                const cartContainer = document.getElementById('cart-container');
+                const cartFooter = document.querySelector('.cart-footer');
+                const flashMessages = document.getElementById('flash-messages');
+                
+                // Clear existing flash messages (except server-side ones)
+                flashMessages.querySelectorAll('.dynamic-flash').forEach(el => el.remove());
+
+                if (items.length === 0) {
+                    if (document.getElementById('search-input').value.trim()) {
+                        flashMessages.innerHTML += `
+                            <div class="flash-message danger dynamic-flash">
+                                No items found.
+                                <button class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
+                            </div>
+                        `;
+                        cartContainer.innerHTML = '';
+                    } else {
+                        cartContainer.innerHTML = '<div class="empty-cart-message">Cart is empty</div>';
+                    }
+                    if (cartFooter) cartFooter.style.display = 'none';
+                    return;
+                }
+
+                // Show cart header and items
+                let html = `
+                    <div class="cart-header">
+                        <div>SELECT</div>
+                        <div>PRODUCT</div>
+                        <div>QUANTITY</div>
+                        <div>TOTAL</div>
+                        <div>ACTIONS</div>
+                    </div>
+                `;
+                items.forEach(item => {
+                    const variantId = item.variant.id || 0;
+                    html += `
+                        <div class="cart-item">
+                            <div>
+                                <input type="checkbox" name="selected_items" value="${item.product.id}_${variantId}">
+                            </div>
+                            <div class="product-info">
+                                <a href="/frame?product_id=${item.product.id}" class="product-image-link">
+                                    <img src="${item.product.image_url}" alt="${item.product.name}" class="product-image">
+                                </a>
+                                <div class="product-details">
+                                    <h3>${item.product.name}</h3>
+                                    <p>${item.variant.color} - ${item.variant.storage}</p>
+                                </div>
+                            </div>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn decrease-btn" 
+                                    data-product-id="${item.product.id}" 
+                                    data-variant-id="${variantId}">-</button>
+                                <span>${item.quantity}</span>
+                                <button type="button" class="quantity-btn increase-btn"
+                                    data-product-id="${item.product.id}" 
+                                    data-variant-id="${variantId}">+</button>
+                            </div>
+                            <div class="price">$${item.total_price.toFixed(2)}</div>
+                            <div>
+                                <button type="button" class="remove-btn" title="Remove Item"
+                                    data-product-id="${item.product.id}" 
+                                    data-variant-id="${variantId}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5z"/>
+                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                cartContainer.innerHTML = html;
+                
+                // Update cart footer
+                if (cartFooter) {
+                    cartFooter.style.display = 'flex';
+                    const totalPriceEl = cartFooter.querySelector('.total-price');
+                    if (totalPriceEl) {
+                        totalPriceEl.textContent = `$${overallTotal.toFixed(2)}`;
+                    }
+                }
+
+                // Re-attach event listeners for new buttons
+                document.querySelectorAll('.decrease-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        updateQuantity(this.dataset.productId, this.dataset.variantId, 'decrease');
+                    });
+                });
+                document.querySelectorAll('.increase-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        updateQuantity(this.dataset.productId, this.dataset.variantId, 'increase');
+                    });
+                });
+                document.querySelectorAll('.remove-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        removeItem(this.dataset.productId, this.dataset.variantId);
+                    });
+                });
+            }
+
+            // Handle search input
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                const performSearch = debounce(async function(query) {
+                    const response = await fetch(`/cart_search?query=${encodeURIComponent(query)}`);
+                    const data = await response.json();
+                    updateCartContainer(data.items, data.overall_total);
+                }, 300);
+
+                searchInput.addEventListener('input', function() {
+                    performSearch(this.value);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

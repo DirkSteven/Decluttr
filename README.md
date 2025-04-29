@@ -1,27 +1,26 @@
+# Decluttr 
+
+<br>
+
+## Installation
 
 
-# Decluttr
+Open `cmd` and inpout the command below. 
+```python 
+    pip install -r requirements.txt ## Install Dependencies, Python 3.10.10 is required
+```
 
 
-##  <a id = "contrib"> 👷‍ Contributors </a> <br>
+#### To run 
 
-| Name | Role | E-mail | Other Contacts |
-| --- | --- | --- | --- |
-| <a href = "https://github.com/DirkSteven">Dirk Steven E. Javier</a> | x | dirkjaviermvp@gmail.com |
-| <a href = "https://x">x </a>|  Developer  | x |
-| <a href = "https:/x">x </a>| Developer | x |
-
+``` python 
+    python run.py
+``` 
 
 
 <br>
 
-
-##  <a id = "notes"> 📝 Notes </a><br>
-<!-- [1] *** INSERT NOTE ***
-
-[2] *** INSERT NOTE *** -->
-
-<br><br>
+#### Demo 
 
 
-
+![Demo](sample.gif)
