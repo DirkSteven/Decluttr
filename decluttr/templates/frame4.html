@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - Decluttr</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}" style="text-decoration: none;color: #000;"><div class="logo">Decluttr</div></a>
+
+        <div class="nav-icons">
+            <a href="{{ url_for('cart') }}" aria-label="Cart" class="cart-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </svg>
+                {% if cart_count > 0 %}
+                    <span class="cart-count">{{ cart_count }}</span>
+                {% endif %}
+            </a>
+            <div class="user-menu">
+                {% if current_user.is_authenticated %}
+                    <div class="user-menu-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                        </svg>
+                        <span class="user-info">{{ current_user.name }}</span>
+                    </div>
+                    <div class="user-menu-content">
+                        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+                    </div>
+                {% else %}
+                    <a href="{{ url_for('login') }}" aria-label="Account">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                        </svg>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="product-container">
+        <div class="product-images">
+            <div class="main-image" onclick="openImageModal(this.querySelector('img').src)">
+                <img src="{{ product.image_url }}" alt="{{ product.name }}" id="mainImage">
+            </div>
+            <div class="thumbnail-gallery">
+                <div class="thumbnail selected" onclick="changeImage('{{ product.image_url }}', this)">
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                </div>
+                <div class="thumbnail" onclick="changeImage('{{ product.image_url }}', this)">
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                </div>
+                <div class="thumbnail" onclick="changeImage('{{ product.image_url }}', this)">
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                </div>
+                <div class="thumbnail" onclick="changeImage('{{ product.image_url }}', this)">
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="product-details">
+            <h1 class="product-title">{{ product.name }}</h1>
+            <div class="price-section">
+                <span class="current-price">${{ product.price|float }}</span>
+                {% set price_float = product.price|float %}
+                {% if price_float < 1000 %}
+                    {% set original_price = (price_float * 1.2)|round(2) %}
+                    <span class="original-price">${{ original_price }}</span>
+                    <span class="discount">{{ (((original_price - price_float) / original_price) * 100)|round(0) }}% OFF</span>
+                {% else %}
+                    {% set original_price = (price_float * 1.1)|round(2) %}
+                    <span class="original-price">${{ original_price }}</span>
+                    <span class="discount">{{ (((original_price - price_float) / original_price) * 100)|round(0) }}% OFF</span>
+                {% endif %}
+            </div>
+
+            {% if variants %}
+            <div class="variants-section">
+                <h3>Variants</h3>
+                <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}" id="addToCartFormWithVariants">
+                    <div class="variant-options">
+                        {% for variant in variants %}
+                        <div class="variant-option" onclick="selectVariant(this, {{ variant.id }})">
+                            {{ variant.color }} - {{ variant.storage }} (${{ variant.price|float }})
+                            <input type="radio" name="variant_id" value="{{ variant.id }}" style="display: none;">
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="quantity-section">
+                        <h3>Quantity</h3>
+                        <button type="button" class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                        <input type="text" class="quantity-input" name="quantity" value="1" readonly>
+                        <button type="button" class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                    </div>
+
+                    <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                </form>
+            </div>
+            {% else %}
+            <div class="quantity-section">
+                <h3>Quantity</h3>
+                <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}" id="addToCartFormWithoutVariants">
+                    <button type="button" class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                    <input type="text" class="quantity-input" name="quantity" value="1" readonly>
+                    <button type="button" class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                    <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                </form>
+            </div>
+            {% endif %}
+
+            <div class="features-section">
+                <h3>Key Features</h3>
+                <ul class="features-list">
+                    <li>High-resolution display</li>
+                    <li>Advanced camera system</li>
+                    <li>Long-lasting battery</li>
+                    <li>Fast processor</li>
+                    <li>Water and dust resistant</li>
+                </ul>
+            </div>
+
+            <div class="description-section">
+                <h3>Description</h3>
+                <p>{{ product.description or "Discover the latest technology with this product, designed to enhance your daily experience with top-notch features and sleek design." }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+        <div class="image-modal-content">
+            <span class="image-modal-close" onclick="closeImageModal()">×</span>
+            <img src="" id="modalImage" alt="Enlarged Product Image">
+        </div>
+    </div>
+
+    <script>
+        function changeImage(src, element) {
+            document.getElementById('mainImage').src = src;
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        function selectVariant(element, variantId) {
+            document.querySelectorAll('.variant-option').forEach(opt => {
+                opt.classList.remove('selected');
+                opt.querySelector('input[type="radio"]').checked = false;
+            });
+            element.classList.add('selected');
+            element.querySelector('input[type="radio"]').checked = true;
+        }
+
+        function changeQuantity(delta) {
+            const input = document.querySelector('.quantity-input');
+            let quantity = parseInt(input.value);
+            quantity += delta;
+            if (quantity < 1) quantity = 1;
+            input.value = quantity;
+        }
+
+        function openImageModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = src;
+            modal.style.display = 'flex';
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+        }
+
+        // Add validation for form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const formWithVariants = document.getElementById('addToCartFormWithVariants');
+            if (formWithVariants) {
+                formWithVariants.addEventListener('submit', function(event) {
+                    const selectedVariant = document.querySelector('input[name="variant_id"]:checked');
+                    if (!selectedVariant) {
+                        event.preventDefault();
+                        alert('Please select a product variant before adding to cart.');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
