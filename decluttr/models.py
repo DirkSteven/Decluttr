@@ -2,6 +2,7 @@ from datetime import datetime
 from decluttr import db
 from flask_login import UserMixin
 from sqlalchemy import Numeric
+from decluttr import bcrypt
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -10,7 +11,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     user_level = db.Column (db.Integer, db.ForeignKey('user_level.user_level'), default=1, nullable=True)
 
-   def __repr__(self):
+    def __repr__(self):
         return f"User('{self.name}', '{self.email}', '{self.sr_code}', '{self.program}')"
 
 class UserLevel(db.Model):

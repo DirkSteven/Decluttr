@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container profile-container">
+    <div class="card">
+        <div class="card-header">
+            <h2>User Profile</h2>
+            <p>Your account information</p>
+        </div>
+        
+        <div class="card-content">
+            <div class="profile-info">
+                <div class="profile-field">
+                    <label>Name</label>
+                    <p>{{ current_user.first_name }} {{ current_user.last_name }}</p>
+                </div>
+                
+                <div class="profile-field">
+                    <label>Email</label>
+                    <p>{{ current_user.email }}</p>
+                </div>
+                
+                <div class="profile-field">
+                    <label>Account ID</label>
+                    <p>{{ current_user.id }}</p>
+                </div>
+            </div>
+            
+            <div class="profile-actions">
+                <a href="{{ url_for('index') }}" class="btn btn-outline">Back to Home</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-primary">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .profile-container {
+        max-width: 600px;
+        margin: 2rem auto;
+    }
+    
+    .profile-info {
+        margin-bottom: 2rem;
+    }
+    
+    .profile-field {
+        margin-bottom: 1rem;
+    }
+    
+    .profile-field label {
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+    }
+    
+    .profile-field p {
+        margin-top: 0.25rem;
+        font-size: 1rem;
+    }
+    
+    .profile-actions {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .profile-actions .btn {
+        flex: 1;
+    }
+</style>
+{% endblock %}
